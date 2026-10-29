@@ -1,0 +1,12 @@
+# dsh-wechat-bridge：把 DSH 指定对话接到微信私聊
+#
+# 装法（在 DSH 里调 plugin_manager，或对 Agent 说）：
+#   plugin_manager install_bundle  target = link:E:/DSH/plugins/dsh-wechat-bridge
+#
+# 卸载：
+#   plugin_manager remove_bundle   target = dsh-wechat-bridge
+#
+# 管理页（Host 启动后）：http://127.0.0.1:19387/dsh-wechat-bridge/
+- insert:
+    - id: dsh-wechat-bridge
+      name: dsh-wechat-bridge

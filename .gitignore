@@ -1,0 +1,10 @@
+node_modules/
+*.tgz
+config.json
+cookies.json
+*.log
+.DS_Store
+.edge-profile/
+__pycache__/
+data/
+out/

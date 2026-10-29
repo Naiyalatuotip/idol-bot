@@ -1,0 +1,9 @@
+# dsh-aoi-daily：Aoi 每日语言复盘
+#
+# 装法：
+#   plugin_manager install_bundle  target = link:E:/DSH/plugins/dsh-aoi-daily
+# 页面：
+#   http://127.0.0.1:19387/dsh-aoi-daily/
+- insert:
+    - id: dsh-aoi-daily
+      name: dsh-aoi-daily
