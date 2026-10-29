@@ -11,7 +11,7 @@
 | 人格 | `presets/example-persona` | Agent 预设模板：persona prefix + 工具 + 技能 + 压缩 |
 | 微信 | `plugins/dsh-wechat-bridge` | iLink 扫码接入；绑定会话；分气泡、阅读延迟、断续输入 |
 | QQ + 微博 | `plugins/dsh-surf` | OneBot v11 QQ 接入；微博扫码登录、关注/推荐阅读、`weibo_browse`、定时分享 |
-| 学习 | `plugins/dsh-aoi-daily` | 每天复盘对话，产出语言校准 + 人格生长，注入会话 |
+| 学习 | `plugins/dsh-daily` | 每天复盘对话，产出语言校准 + 人格生长，注入会话 |
 
 ## 快速开始
 
@@ -19,7 +19,7 @@
 # 1. 每个插件打成 tgz（带设置页的插件必须用 tgz，不能 link）
 cd plugins/dsh-surf && npm pack --pack-destination .
 # 2. 在 DSH 里安装（桌面端用 App 内插件管理器 / plugin_manager）
-plugin_manager install_bundle target=file:E:/DSH/plugins/dsh-surf/dsh-surf-0.3.2.tgz
+plugin_manager install_bundle target=file:E:/DSH/plugins/dsh-surf/dsh-surf-0.4.0.tgz
 # 3. 重启 DSH
 ```
 

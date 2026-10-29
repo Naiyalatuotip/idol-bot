@@ -1,0 +1,9 @@
+# dsh-daily：每日语言复盘
+#
+# 装法：
+#   plugin_manager install_bundle  target = link:E:/DSH/plugins/dsh-daily
+# 页面：
+#   http://127.0.0.1:19387/dsh-daily/
+- insert:
+    - id: dsh-daily
+      name: dsh-daily

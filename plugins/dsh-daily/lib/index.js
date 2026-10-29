@@ -1,20 +1,20 @@
-// dsh-aoi-daily —— 按天复盘角色的对话，学语法与语义习惯（也看对方怎么说话）。
+// dsh-daily —— 按天复盘角色的对话，学语法与语义习惯（也看对方怎么说话）。
 //
 // 每天到点（默认 03:30）：
 //   读目标会话最近 N 条消息（follow 快照，冷会话也能读）→ 问一次默认模型 →
 //   写一份 markdown 复盘 + 合并「可执行规则」→ 规则作为 systemPrompt.context
 //   注入到目标会话（短、稳定，不破坏前缀缓存）。
 //
-// 目标是「aoi 预设」的活着的 agent 自动纳入；也可以在页面上手动勾会话。
+// 目标是目标预设（config.targetPreset，默认 example）的活着的 agent 自动纳入；也可以在页面上手动勾会话。
 
 import { createStore } from './store.mjs'
 import { readSession, buildTranscript, buildMessages, callModel, parseAnalysis, renderDigest } from './analyze.mjs'
 import { renderPage } from './page.mjs'
 
-export const name = 'dsh-aoi-daily'
+export const name = 'dsh-daily'
 export const inject = ['webServer', 'sessions', 'agents', 'sessionTitle', 'sessionController', 'agentPresets', 'agentDefaultModel', 'llm', 'timer']
 
-const PREFIX = '/dsh-aoi-daily'
+const PREFIX = '/dsh-daily'
 const MAX_BODY_BYTES = 64 * 1024
 
 function todayKey(date = new Date()) {
@@ -49,13 +49,14 @@ function sendHtml(res, html) {
 
 export function apply(ctx) {
   const store = createStore()
+  const stateTargetPreset = () => String(store.state.targetPreset || 'example')
   let running = false
   let lastError = null
   const mounted = new WeakSet()
 
   const log = (message) => {
     try {
-      ctx.logger?.info?.('[dsh-aoi-daily] ' + message)
+      ctx.logger?.info?.('[dsh-daily] ' + message)
     } catch {}
   }
 
@@ -82,7 +83,7 @@ export function apply(ctx) {
     const ids = new Set()
     try {
       for (const agent of ctx.agents.list() || []) {
-        if (presetOf(agent) === 'aoi') ids.add(String(agent.id))
+        if (presetOf(agent) === (stateTargetPreset())) ids.add(String(agent.id))
       }
     } catch {}
     return [...ids]
@@ -141,12 +142,12 @@ export function apply(ctx) {
 
   function mountContext(agent) {
     if (!agent || mounted.has(agent)) return
-    if (presetOf(agent) !== 'aoi') return
+    if (presetOf(agent) !== (stateTargetPreset())) return
     if (!store.state.injectContext) return
     mounted.add(agent)
     try {
       agent.ctx.systemPrompt.context({
-        name: 'aoi-daily',
+        name: 'daily',
         order: 950,
         text: () => {
           try {

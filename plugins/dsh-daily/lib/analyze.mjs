@@ -118,7 +118,7 @@ export function buildMessages({ transcript, rules, growth }) {
     '请输出这个 JSON（newRules 至少 2 条，只写用词/语气/语义；removeRules 只在某条旧规则明显错/过时才写）：',
     '{',
     '  "summary": "≤80 字的今日观察",',
-    '  "aoiIssues": [{"kind":"语法|语义|节奏|口头禅","problem":"","fix":"","evidence":"原句"}],',
+    '  "issues": [{"kind":"语法|语义|节奏|口头禅","problem":"","fix":"","evidence":"原句"}],',
     '  "userHabits": [{"habit":"对方的语言习惯","howToRespond":"角色该怎么接"}],',
     '  "newRules": ["≤40 字的可执行规则"],',
     '  "removeRules": ["要删掉的旧规则原文"],',
@@ -135,7 +135,7 @@ export function buildMessages({ transcript, rules, growth }) {
       role: 'user',
       id: randomUUID(),
       content: [{ type: 'text', text: user }],
-      source: { kind: 'plugin', plugin: 'dsh-aoi-daily' },
+      source: { kind: 'plugin', plugin: 'dsh-daily' },
     }],
   }
 }
@@ -165,7 +165,7 @@ export function parseAnalysis(raw) {
   const list = (value) => (Array.isArray(value) ? value : [])
   return {
     summary: String(data.summary || '').trim().slice(0, 200),
-    aoiIssues: list(data.aoiIssues).filter((x) => x && x.problem).slice(0, 8).map((x) => ({
+    issues: list(data.issues).filter((x) => x && x.problem).slice(0, 8).map((x) => ({
       kind: String(x.kind || '语法').slice(0, 10),
       problem: String(x.problem || '').slice(0, 160),
       fix: String(x.fix || '').slice(0, 160),
@@ -194,9 +194,9 @@ export function renderDigest({ date, analysis, added, removed, sessions, transcr
   lines.push(`# ${date} 语言复盘`, '')
   lines.push(`> 会话 ${sessions.length} 个｜消息 ${sessions.reduce((n, s) => n + s.messages.length, 0)} 条｜生成于 ${new Date().toLocaleString('zh-CN')}`, '')
   if (analysis.summary) lines.push('## 今日观察', '', analysis.summary, '')
-  if (analysis.aoiIssues.length) {
+  if (analysis.issues.length) {
     lines.push('## 角色的问题', '', '| 类型 | 问题 | 改法 | 证据 |', '|---|---|---|---|')
-    for (const x of analysis.aoiIssues) lines.push(`| ${x.kind} | ${x.problem} | ${x.fix} | ${x.evidence} |`)
+    for (const x of analysis.issues) lines.push(`| ${x.kind} | ${x.problem} | ${x.fix} | ${x.evidence} |`)
     lines.push('')
   }
   if (analysis.userHabits.length) {

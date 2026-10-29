@@ -1,6 +1,6 @@
 {
   "name": "dsh-surf",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "description": "QQ 接入（OneBot v11 WebSocket，NapCat/SnowLuma/Lagrange）+ 微博阅读（账号 cookies 只读关注/推荐，按兴趣排序，可在对话里分享）。",

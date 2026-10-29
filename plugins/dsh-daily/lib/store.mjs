@@ -1,5 +1,5 @@
 // 每日语言复盘的存储：配置、学到的规则、每天的复盘正文。
-// 位置：$DSH_HOME/aoi-daily/{config.json, digests/YYYY-MM-DD.md}
+// 位置：$DSH_HOME/daily/{config.json, digests/YYYY-MM-DD.md}
 
 import { readFileSync, writeFileSync, mkdirSync, renameSync, existsSync, readdirSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -16,6 +16,7 @@ function defaults() {
     sessionIds: [],
     maxMessages: 120,
     injectContext: true,
+    targetPreset: 'example',
     rules: [],
     growth: { topics: [], style: [], avoid: [], updatedAt: '' },
     lastRunDate: '',
@@ -50,6 +51,7 @@ function normalize(raw) {
     sessionIds: (Array.isArray(raw.sessionIds) ? raw.sessionIds : []).filter((x) => typeof x === 'string' && x.trim()).slice(0, 32),
     maxMessages: Number.isFinite(Number(raw.maxMessages)) ? Math.min(400, Math.max(20, Math.round(Number(raw.maxMessages)))) : base.maxMessages,
     injectContext: raw.injectContext !== false,
+    targetPreset: typeof raw.targetPreset === 'string' && raw.targetPreset.trim() ? raw.targetPreset.trim() : base.targetPreset,
     rules,
     growth: normalizeGrowth(raw.growth),
     lastRunDate: typeof raw.lastRunDate === 'string' ? raw.lastRunDate : '',
@@ -79,7 +81,7 @@ function normalizeGrowth(raw) {
   return { topics, style, avoid, updatedAt: typeof g.updatedAt === 'string' ? g.updatedAt : '' }
 }
 
-export function createStore({ dir = join(HOME, 'aoi-daily') } = {}) {
+export function createStore({ dir = join(HOME, 'daily') } = {}) {
   mkdirSync(join(dir, 'digests'), { recursive: true })
   const configPath = join(dir, 'config.json')
   let state = defaults()
@@ -115,6 +117,7 @@ export function createStore({ dir = join(HOME, 'aoi-daily') } = {}) {
       if (Array.isArray(patch.sessionIds)) state.sessionIds = patch.sessionIds.filter((x) => typeof x === 'string' && x.trim()).slice(0, 32)
       if (Number.isFinite(Number(patch.maxMessages))) state.maxMessages = Math.min(400, Math.max(20, Math.round(Number(patch.maxMessages))))
       if (typeof patch.injectContext === 'boolean') state.injectContext = patch.injectContext
+      if (typeof patch.targetPreset === 'string' && patch.targetPreset.trim()) state.targetPreset = patch.targetPreset.trim()
     }
     save()
     return state

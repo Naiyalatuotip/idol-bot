@@ -43,7 +43,7 @@ async function readBody(req) {
 
 function growthTopics() {
   try {
-    const file = join(HOME, 'aoi-daily', 'config.json')
+    const file = join(HOME, 'daily', 'config.json')
     if (!existsSync(file)) return []
     const data = JSON.parse(readFileSync(file, 'utf8'))
     return (data.growth?.topics || []).filter((x) => Number(x.weight) >= 55).map((x) => x.topic)
@@ -56,6 +56,7 @@ export function apply(ctx) {
   const store = createStore()
   const qq = createQqBridge({ ctx, store, log: () => {} })
   const mounted = new WeakSet()
+  const targetPreset = () => String(store.state.settings.targetPreset || 'example')
   const loginAttempts = new Map()
   let lastShareAt = 0
   let sharing = false
@@ -170,7 +171,7 @@ export function apply(ctx) {
 
   function mountTool(agent) {
     if (!agent || mounted.has(agent)) return
-    if (presetOf(agent) !== 'aoi') return
+    if (presetOf(agent) !== targetPreset()) return
     mounted.add(agent)
     try {
       agent.ctx.tools.register(weiboTool())
@@ -200,7 +201,7 @@ export function apply(ctx) {
         || result.posts[0]
       if (!pick) throw new Error('没有可分享的微博')
       const prompt = buildSharePrompt([pick])
-      const targets = (ctx.agents.list() || []).filter((a) => presetOf(a) === 'aoi')
+      const targets = (ctx.agents.list() || []).filter((a) => presetOf(a) === targetPreset())
       if (!targets.length) throw new Error('没有活着的目标会话')
       for (const agent of targets) {
         await agent.followup({

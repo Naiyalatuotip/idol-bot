@@ -14,7 +14,7 @@
 | 推荐时间线 | `weibo.com/ajax/feed/hottimeline` |
 | 配比 | 默认 **关注 3/4、推荐 1/4**，可在设置里改 `0.5–1` |
 | 排序 | 互动量 + 新鲜度 + 兴趣词命中（设置 + 每日复盘话题 + 默认游戏/番/书/摄影词） |
-| 工具 | `weibo_browse`：Aoi 在对话里说「看看微博」时调用 |
+| 工具 | `weibo_browse`：角色在对话里说「看看微博」时调用 |
 | 定时分享 | 到点把候选素材塞进目标会话，让她用自己口吻分享；优先从关注里挑 |
 | 导入兜底 | 从任意 `cookies.json` 导入，先校验 `m.weibo.cn/api/config` 的 `data.login` |
 
@@ -99,7 +99,7 @@ score = 兴趣命中数 × 6
 兴趣词来源：
 
 1. 设置页「兴趣词」；
-2. `$DSH_HOME/aoi-daily/config.json` 里成长档案 `topics`（权重 ≥55）；
+2. `$DSH_HOME/daily/config.json` 里成长档案 `topics`（权重 ≥55）；
 3. 默认词表（游戏/番/书/摄影/地偶/舞台等）。
 
 ---
@@ -113,7 +113,7 @@ score = 兴趣命中数 × 6
 返回：带作者、数据、链接、为什么挑它的文本列表
 ```
 
-工具挂载条件：Agent 的预设 id 是 `aoi`（可按需改 `presetOf(agent) === 'aoi'`）。
+工具挂载条件：Agent 的预设 id 是 `example`（可按需改 `presetOf(agent) === targetPreset()`）。
 `parameters` 必须是完整 JSON Schema：
 
 ```js

@@ -1,6 +1,6 @@
 // 每日语言复盘的管理页。
 
-export function renderPage({ prefix = '/dsh-aoi-daily' } = {}) {
+export function renderPage({ prefix = '/dsh-daily' } = {}) {
   const safePrefix = JSON.stringify(prefix)
   return `<!doctype html>
 <html lang="zh-CN">
@@ -57,8 +57,8 @@ footer{margin-top:24px;color:var(--light);font-size:12px}
 
 <section>
 <h2>复盘哪些会话</h2>
-<p class="hint">不勾 = 自动选择「当前活着、preset=aoi」的会话。勾了就只复盘勾中的（可多选）。</p>
-<div class="row"><label><input type="checkbox" id="allAuto"> 自动（preset=aoi）</label></div>
+<p class="hint">不勾 = 自动选择「当前活着、preset 匹配目标预设」的会话。勾了就只复盘勾中的（可多选）。</p>
+<div class="row"><label><input type="checkbox" id="allAuto"> 自动（按目标预设）</label></div>
 <div id="sessions" class="list"></div>
 <div class="row" style="margin-top:10px"><button class="ghost" id="saveSessions">保存会话选择</button></div>
 </section>
@@ -112,7 +112,7 @@ footer{margin-top:24px;color:var(--light);font-size:12px}
     document.getElementById('allAuto').checked = manual.length === 0;
     document.getElementById('sessions').innerHTML = (s.sessions||[]).map(function(x){
       var checked = manual.indexOf(x.id) >= 0 ? ' checked' : '';
-      var mark = x.preset === 'aoi' ? ' · aoi' : (x.alive ? '' : ' · 未启动');
+      var mark = x.preset ? (' · ' + x.preset) : (x.alive ? '' : ' · 未启动');
       return '<div class="item"><input type="checkbox" data-session="'+esc(x.id)+'"'+checked+'>'
         + '<div class="grow"><b>'+esc(x.title||'（未命名）')+'</b><div class="muted mono">'+esc(x.id)+mark+'</div></div></div>';
     }).join('') || '<p class="muted">没有会话。</p>';

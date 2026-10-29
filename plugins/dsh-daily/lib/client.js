@@ -1,17 +1,17 @@
 // DSH「每日复盘」· 网页半边
 //
-// 在 DSH 设置左侧栏加一项「每日复盘」，读写宿主半边的 /dsh-aoi-daily/* 路由。
+// 在 DSH 设置左侧栏加一项「每日复盘」，读写宿主半边的 /dsh-daily/* 路由。
 // 槽位名 'settings.section' 与 dsh-speak-up / dsh-fish-memory 一致。
 
 window.__ModuleLoader__.load({
-  id: 'dsh-aoi-daily',
+  id: 'dsh-daily',
   factory: (require) => {
     var module = { exports: {} }
     var exports = module.exports
 
     const React = require('react')
     const inject = ['slots']
-    const B = '/dsh-aoi-daily'
+    const B = '/dsh-daily'
 
     const get = (p) => fetch(B + p, { cache: 'no-store' }).then((r) => r.json()).catch(() => null)
     const post = (p, body) =>
@@ -230,7 +230,7 @@ window.__ModuleLoader__.load({
       const slots = ctx.get('slots')
       slots.inject('settings.section', () =>
         slots.register(
-          { name: 'settings.section', id: 'aoi-daily', order: 54, label: () => '每日复盘' },
+          { name: 'settings.section', id: 'daily', order: 54, label: () => '每日复盘' },
           Section,
         ),
       )

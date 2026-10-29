@@ -28,7 +28,7 @@ function defaults() {
     },
     weiboSeen: {},
     weiboCache: [],
-    settings: {},
+    settings: { targetPreset: 'example' },
   }
 }
 
@@ -65,7 +65,7 @@ function norm(raw) {
     },
     weiboSeen: raw.weiboSeen && typeof raw.weiboSeen === 'object' && !Array.isArray(raw.weiboSeen) ? raw.weiboSeen : {},
     weiboCache: Array.isArray(raw.weiboCache) ? raw.weiboCache.slice(-100) : [],
-    settings: raw.settings && typeof raw.settings === 'object' ? raw.settings : {},
+    settings: { targetPreset: typeof raw.settings?.targetPreset === 'string' && raw.settings.targetPreset.trim() ? raw.settings.targetPreset.trim() : 'example' },
   }
 }
 

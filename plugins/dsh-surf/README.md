@@ -5,7 +5,7 @@
 1. **QQ 接入**：OneBot v11 正向 WebSocket（NapCat / SnowLuma / Lagrange 都行）。
    QQ 消息 → `sessionController.prompt` → DSH 回合 → `follow` → 分气泡回 QQ。
 2. **微博阅读**：用账号 cookies 只读「关注」和「推荐」时间线，按他的兴趣排序；
-   提供 `weibo_browse` 工具，也可以定时把候选素材塞给目标会话 让她主动分享。
+   提供 `weibo_browse` 工具，也可以定时把候选素材塞给目标会话 让角色主动分享。
 
 ## 装
 

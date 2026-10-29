@@ -1,9 +1,9 @@
 {
-  "name": "dsh-aoi-daily",
-  "version": "0.2.1",
+  "name": "dsh-daily",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "按天复盘 Aoi 的对话：读最近消息，找语法/语义/口头禅问题，也总结用户的语言习惯与话题偏好，产出可执行规则并注入 Aoi 会话；设置页内置「每日复盘」。",
+  "description": "按天复盘目标会话：读最近消息，找语法/语义/口头禅问题，也总结用户的语言习惯与话题偏好，产出可执行规则并注入会话；设置页内置「每日复盘」。",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",

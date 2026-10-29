@@ -21,8 +21,8 @@
 ┌───────────────▼────────────────────────────────────────────┐
 │ Profile: desktop                                            │
 │  ├─ 第三方：fish-memory / feiyu-mood / speak-up / im ...    │
-│  ├─ 本仓库：dsh-wechat-bridge / dsh-surf / dsh-aoi-daily    │
-│  └─ dsh-preset-aoi（Agent 预设声明）                        │
+│  ├─ 本仓库：dsh-wechat-bridge / dsh-surf / dsh-daily    │
+│  └─ dsh-preset-example（Agent 预设声明）                        │
 └───────────────┬────────────────────────────────────────────┘
                 │ Agent Preset: persona + tools + skills
 ┌───────────────▼────────────────────────────────────────────┐
@@ -59,7 +59,7 @@ agent-framework/
 ├─ plugins/
 │  ├─ dsh-wechat-bridge/        ← 微信 iLink 桥（host + client + 页面）
 │  ├─ dsh-surf/                 ← QQ OneBot 桥 + 微博阅读/分享
-│  └─ dsh-aoi-daily/            ← 每日语言复盘 + 人格生长
+│  └─ dsh-daily/            ← 每日语言复盘 + 人格生长
 └─ presets/
    └─ example-persona/          ← 最小可用的 Agent 预设模板
 ```
@@ -76,11 +76,11 @@ DSH 0.2.x 不再读 `~/.dsh/.agent-presets/`。预设由 profile 里一个 bundl
 
 ```yaml
 - insert:
-    - id: preset-aoi
+    - id: preset-example
       name: '@deepseek-ai/dsh-agent-preset'
       config:
-        id: aoi
-        name: Aoi · 夕葵aoi
+        id: example
+        name: 示例角色
         description: 一句话说明
         order: 5
         plugins:
@@ -100,7 +100,7 @@ DSH 0.2.x 不再读 `~/.dsh/.agent-presets/`。预设由 profile 里一个 bundl
             name: '@deepseek-ai/dsh-skill-filesystem'
             config:
               customSkillDirs:
-                - E:/DSH/plugins/dsh-preset-aoi/skills
+                - E:/DSH/plugins/dsh-preset-example/skills
           - id: tool-skill
             name: '@deepseek-ai/dsh-tool-skill'
           - id: compaction
@@ -152,7 +152,7 @@ DSH 0.2.x 不再读 `~/.dsh/.agent-presets/`。预设由 profile 里一个 bundl
 
 ```
 <plugin>/skills/
-├─ aoi-voice/
+├─ voice/
 │  ├─ SKILL.md                 # frontmatter: name + description + 正文
 │  └─ references/
 │     ├─ 01-语气细则.md
@@ -160,10 +160,10 @@ DSH 0.2.x 不再读 `~/.dsh/.agent-presets/`。预设由 profile 里一个 bundl
 │     ├─ 03-黑话与世界观.md
 │     ├─ 04-长文与小作文.md
 │     └─ 06-关于他.md
-├─ aoi-persona-ops/
+├─ persona-ops/
 │  └─ SKILL.md                 # 维护流程：改设定、接语料、验收
 └─ corpus/
-   ├─ Aoi原句库.jsonl
+   ├─ 原句库.jsonl
    ├─ 记忆导入-关系大事记.md
    └─ 原始语料/
 ```
@@ -172,7 +172,7 @@ DSH 0.2.x 不再读 `~/.dsh/.agent-presets/`。预设由 profile 里一个 bundl
 
 ```markdown
 ---
-name: aoi-voice
+name: voice
 description: 什么时候该加载它（模型靠这句话决定要不要读）
 ---
 
@@ -199,7 +199,7 @@ description: 什么时候该加载它（模型靠这句话决定要不要读）
 |---|---|---|
 | `dsh-wechat-bridge` | 微信 iLink 扫码接入；绑定 DSH 会话；分气泡、阅读延迟、断续输入状态 | `webServer` `sessions` `agents` `sessionTitle` `sessionController` |
 | `dsh-surf` | QQ OneBot v11 接入；微博扫码登录、关注/推荐阅读、按兴趣排序、`weibo_browse` 工具、定时分享 | `webServer` `sessions` `agents` `sessionTitle` `sessionController` `tools` `agentPresets` `timer` |
-| `dsh-aoi-daily` | 每天读对话 → 语言校准 + 人格生长（话题权重/风格/回避）→ 注入 context；设置页 | `webServer` `sessions` `agents` `sessionTitle` `sessionController` `agentPresets` `llm` `timer` |
+| `dsh-daily` | 每天读对话 → 语言校准 + 人格生长（话题权重/风格/回避）→ 注入 context；设置页 | `webServer` `sessions` `agents` `sessionTitle` `sessionController` `agentPresets` `llm` `timer` |
 
 三个插件都遵循同一套约定：
 
@@ -242,7 +242,7 @@ description: 什么时候该加载它（模型靠这句话决定要不要读）
 persona prefix（预设）
   + fish-memory 召回
   + feiyu-mood 心情一句
-  + aoi-daily 【语言校准】/【成长】
+  + daily 【语言校准】/【成长】
   → 模型回合
 ```
 
@@ -274,7 +274,7 @@ speak-up 定时器 → 安静时段 / 冷却 / 在场 / 每日上限 / 命中线
 ### 6.5 每日学习 / 人格生长
 
 ```
-aoi-daily 定时（默认 03:30）
+daily 定时（默认 03:30）
   → follow 快照读最近 N 条（冷会话也能读）
   → 默认模型分析：用词 / 语气 / 语义 / 对方反应
   → 写 digests/YYYY-MM-DD.md
@@ -398,7 +398,7 @@ parameters: {
 3. **写人格**：按 §3.3 的顺序写 prefix；先短，再补语料。
 4. **建技能**：在 `skills/` 下建 `SKILL.md` + `references/`；把路径写进 `customSkillDirs`。
 5. **接 IM**：装 `dsh-wechat-bridge` 或 `dsh-surf`，扫码/填 WS，绑定会话。
-6. **开每日学习**：装 `dsh-aoi-daily`，设时间、目标会话、是否注入。
+6. **开每日学习**：装 `dsh-daily`，设时间、目标会话、是否注入。
 7. **验收**：新建会话聊 5 轮；看语气、长度、称呼、是否出戏；再跑一次每日复盘。
 8. **发布**：`npm pack` 每个插件；在 README 写清安装命令、依赖、兼容版本。
 
