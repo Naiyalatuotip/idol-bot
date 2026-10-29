@@ -28,6 +28,7 @@ plugin_manager install_bundle target=file:E:/DSH/plugins/dsh-surf/dsh-surf-0.3.2
 ## 文档
 
 - [框架说明（架构 / 预设 / 技能 / 规则 / 兼容 / 排错）](docs/AGENT-FRAMEWORK.md)
+- [微博阅读（扫码登录 / 关注+推荐 / 排序 / 分享 / 排错）](docs/WEIBO.md)
 
 ## 规则速记
 
